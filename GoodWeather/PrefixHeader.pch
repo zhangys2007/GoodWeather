@@ -1,0 +1,14 @@
+//
+//  PrefixHeader.pch
+//  GoodWeather
+//
+//  Created by zhangys on 2019/9/26.
+//  Copyright © 2019 上海永同资产管理有限公司. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import "AppConstants.h"
+
+#endif /* PrefixHeader_pch */

@@ -3,7 +3,7 @@
 //  GoodWeather
 //
 //  Created by zhangys on 2017/5/4.
-//  Copyright © 2017年 上海永同资产管理有限公司. All rights reserved.
+//  Copyright © 2017年 张茨一飞. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

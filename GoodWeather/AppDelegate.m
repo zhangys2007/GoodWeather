@@ -3,13 +3,17 @@
 //  GoodWeather
 //
 //  Created by zhangys on 2017/5/4.
-//  Copyright © 2017年 上海永同资产管理有限公司. All rights reserved.
+//  Copyright © 2017年 张茨一飞. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "UIImageView+WebCache.h"
+#import "AppConstants.h"
+#import <XHLaunchAd.h>
+#import <UIImageView+WebCache.h>
 
-@interface AppDelegate ()
+#import "HomeMainViewController.h"
+
+@interface AppDelegate ()<XHLaunchAdDelegate>
 
 @property (nonatomic, strong) UIImageView * customLaunchImageView;
 @property (nonatomic, strong) UIImageView * yourImageView;
@@ -25,54 +29,31 @@
     
     [self setUpLaunchScreen];
     
+    HomeMainViewController * mainVC = [[HomeMainViewController alloc] init];
+    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+    self.window.rootViewController = nav;
+    
     return YES;
 }
 
 //添加启动图
 - (void)setUpLaunchScreen{
-    
-    self.customLaunchImageView = [[UIImageView alloc]initWithFrame:self.window.bounds];
-    self.customLaunchImageView.userInteractionEnabled = YES;
-    self.customLaunchImageView.backgroundColor = [UIColor redColor];
-    self.yourImageView = [[UIImageView alloc]initWithFrame:self.window.bounds];
-    self.yourImageView.backgroundColor = [UIColor greenColor];
-    
-    self.customLaunchImageView.image = [UIImage imageNamed:@"Louch"];
-    
-    //自定义控件我就略了
-//    [self.customLaunchImageView addSubview: yourLabel];
-//    
-    [self.customLaunchImageView addSubview: self.yourImageView];
-    
-    [self.yourImageView sd_setImageWithURL:[NSURL URLWithString:@"https://cn.bing.com/az/hprichbg/rb/SSAtlantis_ZH-CN10429588926_1920x1080.jpg"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        image = [UIImage imageNamed:@"Louch"];
-    }];
+    //1.使用默认配置初始化
+    XHLaunchImageAdConfiguration *imageAdconfiguration = [XHLaunchImageAdConfiguration defaultConfiguration];
+    imageAdconfiguration.frame = CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height - 105 * AutoSizeScaleX);
+    imageAdconfiguration.duration = 3;
+    //广告图片URLString/或本地图片名(.jpg/.gif请带上后缀)
+    imageAdconfiguration.imageNameOrURLString = @"https://io.lookyes.cn/bing/";
+    imageAdconfiguration.contentMode = UIViewContentModeScaleAspectFill;
+    //广告点击打开链接
+    //imageAdconfiguration.openURLString = @"http://www.returnoc.com";
+    //显示图片开屏广告
+    [XHLaunchAd imageAdWithImageAdConfiguration:imageAdconfiguration delegate:self];
 
-//    [yourButton addTarget:self action:@selector(yourButtonClick) forControlEvents:UIControlEventTouchDown];
-//    [self.customLaunchImageView addSubview:yourButton];
-    
-    [self.window addSubview:self.customLaunchImageView];
-    [self.window bringSubviewToFront:self.customLaunchImageView];
-    
-    //5秒后自动关闭
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5*NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self yourButtonClick];
-    });
 }
 
-- (void)yourButtonClick {
+-(void)xhLaunchAdShowFinish:(XHLaunchAd *)launchAd{
     
-    //是否显示新版本引导页加在这里
-    
-    //移动自定义启动图
-    if (self.customLaunchImageView) {
-        [UIView animateWithDuration:0.3 animations:^{
-            self.customLaunchImageView.alpha = 0;
-        } completion:^(BOOL finished) {
-            [self.customLaunchImageView removeFromSuperview];
-            self.customLaunchImageView = nil;
-        }];
-    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
